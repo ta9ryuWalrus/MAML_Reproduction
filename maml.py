@@ -25,7 +25,7 @@ class MAML(nn.Module):
         self.conv2 = conv_block(32, 32)
         self.conv3 = conv_block(32, 32)
         self.conv4 = conv_block(32, 32)
-        self.logits = nn.Linear(1600, 5)
+        self.logits = nn.Linear(800, 5)
 
     def forward(self, x):
         x = self.conv1(x)
