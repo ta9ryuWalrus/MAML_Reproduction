@@ -29,19 +29,19 @@ loss_fn = torch.nn.CrossEntropyLoss().to(device)
 model_path = "./model/"
 result_path = "./log/train"
 
+batchiter = iter(trainloader)
+
 for epoch in range(epochs):
     loss_log = []
     acc_log = []
 
-    for batch_idx, batch in enumerate(trainloader):
-        batch_logs = dict(batch=batch_idx)
-        loss, acc = adaptation(model, optimizer, batch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
-        batch_logs['loss'] = loss.item()
-        batch_logs['accuracy'] = acc
+    batch = batchiter.next()
+    loss, acc = adaptation(model, optimizer, batch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
     
     loss_log.append(loss.item())
     acc_log.append(acc)
     print("Epoch {}: loss = {:.4f}, acc = {:.4f}".format(epoch, loss.item(), acc))
+
 
 torch.save(model.state_dict(), model_path)
 all_result = {'train_loss': loss_log, 'train_acc': acc_log}
