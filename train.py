@@ -19,7 +19,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
             loss = loss_fn(logits, input_y)
             gradients = torch.autograd.grad(loss, weights.values(), create_graph=train)
 
-            weights = OrderedDict((name, param - lr * grad) for ((name, param), grad) in zip(weights.item(), gradients))
+            weights = OrderedDict((name, param - lr * grad) for ((name, param), grad) in zip(weights.items(), gradients))
 
         # queryで評価
         input_x = x_val[idx].to(device)
