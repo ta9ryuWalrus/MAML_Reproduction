@@ -43,7 +43,7 @@ for epoch in range(epochs):
     print("Epoch {}: loss = {:.4f}, acc = {:.4f}".format(epoch, loss.item(), acc))
 
 
-torch.save(model.state_dict(), model_path)
+torch.save(model.state_dict(), model_path + 'model.pth')
 all_result = {'train_loss': loss_log, 'train_acc': acc_log}
 
 with open(result_path + '.pkl', 'wb') as f:
