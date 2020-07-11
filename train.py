@@ -4,6 +4,7 @@ from collections import OrderedDict
 def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
     losses = []
     predictions = []
+    labels = []
     x_train, y_train = batch['train']
     x_val, y_val = batch['test']
 
@@ -30,6 +31,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
 
         y_pred = logits.softmax(dim=1)
         predictions.append(y_pred)
+        labels.append(input_y)
         losses.append(loss)
 
     model.train()
@@ -39,6 +41,6 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         batch_loss.backward()
         optimizer.step()
     y_pred = torch.cat(predictions)
-    #y_val = torch.cat(y_val)
-    batch_acc = torch.eq(y_pred.argmax(dim=-1), y_val).sum().item() / y_pred.shape[0]
+    y_label = torch.cat(labels)
+    batch_acc = torch.eq(y_pred.argmax(dim=-1), y_label).sum().item() / y_pred.shape[0]
     return batch_loss, batch_acc
