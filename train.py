@@ -39,6 +39,6 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         batch_loss.backward()
         optimizer.step()
     y_pred = torch.cat(predictions)
-    y_val = torch.cat(y_val)
+    #y_val = torch.cat(y_val)
     batch_acc = torch.eq(y_pred.argmax(dim=-1), y_val).sum().item() / y_pred.shape[0]
     return batch_loss, batch_acc
