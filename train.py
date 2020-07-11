@@ -2,7 +2,7 @@ import torch
 from collections import OrderedDict
 
 def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
-    losses = []
+    # losses = []
     predictions = []
     labels = []
     x_train, y_train = batch['train']
@@ -15,6 +15,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         input_x = x_train[idx].to(device)
         input_y = y_train[idx].to(device)
 
+        optimizer.zero_grad()
         for iter in range(train_step):
             logits = model.adaptation(input_x, weights)
             loss = loss_fn(logits, input_y)
@@ -26,21 +27,26 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         input_x = x_val[idx].to(device)
         input_y = y_val[idx].to(device)
         logits = model.adaptation(input_x, weights)
+        model.train()
         loss = loss_fn(logits, input_y)
         loss.backward(retain_graph=True)
+        if train:
+            optimizer.step()
 
         y_pred = logits.softmax(dim=1)
         predictions.append(y_pred)
         labels.append(input_y)
-        losses.append(loss)
+        # losses.append(loss)
 
-    model.train()
-    optimizer.zero_grad()
-    batch_loss = torch.stack(losses).mean()
+    # model.train()
+    # optimizer.zero_grad()
+    # batch_loss = torch.stack(losses).mean()
+    '''
     if train:
         batch_loss.backward()
         optimizer.step()
+    '''
     y_pred = torch.cat(predictions)
     y_label = torch.cat(labels)
     batch_acc = torch.eq(y_pred.argmax(dim=-1), y_label).sum().item() / y_pred.shape[0]
-    return batch_loss, batch_acc
+    return loss, batch_acc
