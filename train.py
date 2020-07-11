@@ -11,21 +11,21 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         weights = OrderedDict(model.named_parameters())
 
         # k-shotでadaptation
-        x_train[idx].to(device)
-        y_train[idx].to(device)
+        input_x = x_train[idx].to(device)
+        input_y = y_train[idx].to(device)
 
         for iter in range(train_step):
-            logits = model.adaptation(x_train, weights)
-            loss = loss_fn(logits, y_train)
+            logits = model.adaptation(input_x, weights)
+            loss = loss_fn(logits, input_y)
             gradients = torch.autograd.grad(loss, weights.values(), create_graph=train)
 
             weights = OrderedDict((name, param - lr * grad) for ((name, param), grad) in zip(weights.item(), gradients))
 
         # queryで評価
-        x_val[idx].to(device)
-        y_val[idx].to(device)
-        logits = model.adaptation(x_val, weights)
-        loss = loss_fn(logits, y_val)
+        input_x = x_val[idx].to(device)
+        input_y = y_val[idx].to(device)
+        logits = model.adaptation(input_x, weights)
+        loss = loss_fn(logits, input_y)
         loss.backward(retain_graph=True)
 
         y_pred = logits.softmax(dim=1)
