@@ -41,4 +41,4 @@ class MAML(nn.Module):
                                 weights.get(f'conv{block}.1.weight'), weights.get(f'conv{block}.1.bias'))
         
         x = x.view(x.size(0), -1)
-        return x = F.linear(x, weights['logits.weight'], weights['logits.bias'])
+        return F.linear(x, weights['logits.weight'], weights['logits.bias'])
