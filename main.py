@@ -49,7 +49,7 @@ for epoch in range(epochs):
     # test
     evalbatch = evaliter.next()
     model.eval()
-    testloss, testacc = test(model, evalbatch, loss_fn, train_step=1, device=device)
+    testloss, testacc = test(model, evalbatch, loss_fn, lr=0.4, train_step=1, device=device)
 
     test_loss_log.append(testloss)
     test_acc_log.append(testacc)

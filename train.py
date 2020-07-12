@@ -41,7 +41,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
     batch_acc = torch.eq(y_pred.argmax(dim=-1), y_label).sum().item() / y_pred.shape[0]
     return loss, batch_acc
 
-def test(model, batch, loss_fn, train_step, device):
+def test(model, batch, loss_fn, lr, train_step, device):
     x_train, y_train = batch['train']
     x_val, y_val = batch['test']
     predictions = []
