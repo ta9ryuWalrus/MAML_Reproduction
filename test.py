@@ -21,6 +21,9 @@ model = MAML().to(device)
 model.load_state_dict(torch.load(model_path))
 loss_fn = torch.nn.CrossEntropyLoss().to(device)
 
+test_loss_log = []
+test_acc_log = []
+
 for i in range(1000):
     evalbatch = evaliter.next()
     model.eval()
