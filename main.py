@@ -29,18 +29,32 @@ loss_fn = torch.nn.CrossEntropyLoss().to(device)
 model_path = "./model/"
 result_path = "./log/train"
 
-batchiter = iter(trainloader)
+trainiter = iter(trainloader)
+evaliter = iter(testloader)
+
+train_loss_log = []
+train_acc_log = []
+test_loss_log = []
+test_acc_log = []
 
 for epoch in range(epochs):
-    loss_log = []
-    acc_log = []
-
-    batch = batchiter.next()
+    # train
+    trainbatch = trainiter.next()
+    model.train()
     loss, acc = adaptation(model, optimizer, batch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
     
-    loss_log.append(loss.item())
-    acc_log.append(acc)
-    print("Epoch {}: loss = {:.4f}, acc = {:.4f}".format(epoch, loss.item(), acc))
+    train_loss_log.append(loss.item())
+    train_acc_log.append(acc)
+
+    # test
+    evalbatch = evaliter.next()
+    model.eval()
+    testloss, testacc = adaptation(model, optimizer, loss_fn, lr=0.4, train_step=1, train=False, device=device)
+
+    test_loss_log.append(testloss)
+    test_acc_log.append(testacc)
+
+    print("Epoch {}: train_loss = {:.4f}, train_acc = {:.4f}, test_loss = {:.4f}, test_acc = {:.4f}".format(epoch, loss.item(), acc, testloss.item(), testacc))
 
 
 torch.save(model.state_dict(), model_path + 'model.pth')
