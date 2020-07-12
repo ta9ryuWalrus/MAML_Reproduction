@@ -15,14 +15,14 @@ torch.backends.cudnn.benchmark = True
 # dataset
 
 trainset = miniimagenet("data", ways=5, shots=5, test_shots=15, meta_train=True, download=True)
-trainloader = BatchMetaDataLoader(trainset, batch_size=32, num_workers=4, shuffle=True)
+trainloader = BatchMetaDataLoader(trainset, batch_size=25, num_workers=4, shuffle=True)
 
 testset = miniimagenet("data", ways=5, shots=5, test_shots=15, meta_test=True, download=True)
-testloader=BatchMetaDataLoader(testset, batch_size=32, num_workers=4, shuffle=True)
+testloader=BatchMetaDataLoader(testset, batch_size=25, num_workers=4, shuffle=True)
 
 # training
 
-epochs = 50
+epochs = 100
 model = MAML().to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 loss_fn = torch.nn.CrossEntropyLoss().to(device)
