@@ -15,10 +15,10 @@ torch.backends.cudnn.benchmark = True
 # dataset
 
 trainset = miniimagenet("data", ways=5, shots=5, test_shots=15, meta_train=True, download=True)
-trainloader = BatchMetaDataLoader(trainset, batch_size=25, num_workers=4, shuffle=True)
+trainloader = BatchMetaDataLoader(trainset, batch_size=2, num_workers=4, shuffle=True)
 
 testset = miniimagenet("data", ways=5, shots=5, test_shots=15, meta_test=True, download=True)
-testloader=BatchMetaDataLoader(testset, batch_size=25, num_workers=4, shuffle=True)
+testloader=BatchMetaDataLoader(testset, batch_size=2, num_workers=4, shuffle=True)
 
 # training
 
@@ -41,7 +41,7 @@ for epoch in range(epochs):
     # train
     trainbatch = trainiter.next()
     model.train()
-    loss, acc = adaptation(model, optimizer, trainbatch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
+    loss, acc = adaptation(model, optimizer, trainbatch, loss_fn, lr=0.01, train_step=5, train=True, device=device)
     
     train_loss_log.append(loss.item())
     train_acc_log.append(acc)
@@ -49,7 +49,7 @@ for epoch in range(epochs):
     # test
     evalbatch = evaliter.next()
     model.eval()
-    testloss, testacc = test(model, evalbatch, loss_fn, lr=0.4, train_step=1, device=device)
+    testloss, testacc = test(model, evalbatch, loss_fn, lr=0.4, train_step=10, device=device)
 
     test_loss_log.append(testloss)
     test_acc_log.append(testacc)
