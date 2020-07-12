@@ -22,7 +22,7 @@ testloader=BatchMetaDataLoader(testset, batch_size=25, num_workers=4, shuffle=Tr
 
 # training
 
-epochs = 100
+epochs = 1000
 model = MAML().to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 loss_fn = torch.nn.CrossEntropyLoss().to(device)
