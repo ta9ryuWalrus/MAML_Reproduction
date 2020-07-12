@@ -27,12 +27,13 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         input_y = y_val[idx].to(device)
         logits = model.adaptation(input_x, weights)
         loss = loss_fn(logits, input_y)
+        loss.backward(retain_graph=True)
         losses.append(loss)
         if idx % 5 == 4 and train:
             model.train()
             batch_loss = torch.stack(losses).mean()
             optimizer.zero_grad()
-            batch_loss.backward(retain_graph=True)
+            batch_loss.backward()
             optimizer.step()
         if idx == 4:
             print("loss1 {:.8f}, loss2 {:.8f}, loss3 {:.8f}, loss4 {:.8f}".format(losses[0].item(), losses[1].item(), losses[2].item(), losses[3].item()))
