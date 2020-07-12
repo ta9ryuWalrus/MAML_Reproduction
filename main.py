@@ -51,7 +51,7 @@ for epoch in range(epochs):
     model.eval()
     testloss, testacc = test(model, evalbatch, loss_fn, lr=0.01, train_step=10, device=device)
 
-    test_loss_log.append(testloss)
+    test_loss_log.append(testloss.item())
     test_acc_log.append(testacc)
 
     print("Epoch {}: train_loss = {:.4f}, train_acc = {:.4f}, test_loss = {:.4f}, test_acc = {:.4f}".format(epoch, loss.item(), acc, testloss.item(), testacc))
