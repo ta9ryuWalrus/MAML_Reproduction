@@ -49,7 +49,7 @@ for epoch in range(epochs):
     # test
     evalbatch = evaliter.next()
     model.eval()
-    testloss, testacc = test(model, evalbatch, loss_fn, lr=0.4, train_step=10, device=device)
+    testloss, testacc = test(model, evalbatch, loss_fn, lr=0.01, train_step=10, device=device)
 
     test_loss_log.append(testloss)
     test_acc_log.append(testacc)
@@ -58,7 +58,7 @@ for epoch in range(epochs):
 
 
 torch.save(model.state_dict(), model_path + 'model.pth')
-all_result = {'train_loss': loss_log, 'train_acc': acc_log}
+all_result = {'train_loss': train_loss_log, 'train_acc': train_acc_log, 'test_loss': test_loss_log, 'test_acc': test_acc_log}
 
 with open(result_path + '.pkl', 'wb') as f:
     pickle.dump(all_result, f)
