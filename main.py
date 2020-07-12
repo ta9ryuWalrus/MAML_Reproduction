@@ -6,7 +6,7 @@ import csv
 from torchmeta.datasets.helpers import miniimagenet
 from torchmeta.utils.data import BatchMetaDataLoader
 from maml import MAML
-from train import adaptation
+from train import adaptation, test
 import pickle
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -49,7 +49,7 @@ for epoch in range(epochs):
     # test
     evalbatch = evaliter.next()
     model.eval()
-    testloss, testacc = adaptation(model, optimizer, evalbatch, loss_fn, lr=0.4, train_step=1, train=False, device=device)
+    testloss, testacc = test(model, evalbatch, loss_fn, train_step=1, device=device)
 
     test_loss_log.append(testloss)
     test_acc_log.append(testacc)
