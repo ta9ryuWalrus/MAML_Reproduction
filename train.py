@@ -28,15 +28,15 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         logits = model.adaptation(input_x, weights)
         loss = loss_fn(logits, input_y)
         #loss.backward(retain_graph=True)
-        losses.append(loss)
-        if idx % 5 == 4 and train:
+        # losses.append(loss)
+        if train:
             model.train()
-            batch_loss = torch.stack(losses).mean()
+            # batch_loss = torch.stack(losses).mean()
             optimizer.zero_grad()
-            batch_loss.backward(retain_graph=True)
+            loss.backward(retain_graph=True)
             optimizer.step()
-        if idx == 4:
-            print("loss1 {:.8f}, loss2 {:.8f}, loss3 {:.8f}, loss4 {:.8f}".format(losses[0].item(), losses[1].item(), losses[2].item(), losses[3].item()))
+        # if idx == 4:
+            # print("loss1 {:.8f}, loss2 {:.8f}, loss3 {:.8f}, loss4 {:.8f}".format(losses[0].item(), losses[1].item(), losses[2].item(), losses[3].item()))
 
         y_pred = logits.softmax(dim=1)
         predictions.append(y_pred)
@@ -54,4 +54,4 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
     y_pred = torch.cat(predictions)
     y_label = torch.cat(labels)
     batch_acc = torch.eq(y_pred.argmax(dim=-1), y_label).sum().item() / y_pred.shape[0]
-    return batch_loss, batch_acc
+    return loss, batch_acc
