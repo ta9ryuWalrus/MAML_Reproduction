@@ -41,7 +41,7 @@ for epoch in range(epochs):
     # train
     trainbatch = trainiter.next()
     model.train()
-    loss, acc = adaptation(model, optimizer, batch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
+    loss, acc = adaptation(model, optimizer, trainbatch, loss_fn, lr=0.4, train_step=1, train=True, device=device)
     
     train_loss_log.append(loss.item())
     train_acc_log.append(acc)
@@ -49,7 +49,7 @@ for epoch in range(epochs):
     # test
     evalbatch = evaliter.next()
     model.eval()
-    testloss, testacc = adaptation(model, optimizer, loss_fn, lr=0.4, train_step=1, train=False, device=device)
+    testloss, testacc = adaptation(model, optimizer, evalbatch, loss_fn, lr=0.4, train_step=1, train=False, device=device)
 
     test_loss_log.append(testloss)
     test_acc_log.append(testacc)
