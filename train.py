@@ -35,7 +35,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
             batch_loss.backward(retain_graph=True)
             optimizer.step()
         if idx == 4:
-            print("loss1 {:.8f}, loss2 {:.8f}, loss3 {:.8f}, loss4 {:.8f}".format(losses[0].item(), losses[1].item(), losses.[2].item(), losses[3].item()))
+            print("loss1 {:.8f}, loss2 {:.8f}, loss3 {:.8f}, loss4 {:.8f}".format(losses[0].item(), losses[1].item(), losses[2].item(), losses[3].item()))
 
         y_pred = logits.softmax(dim=1)
         predictions.append(y_pred)
