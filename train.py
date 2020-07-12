@@ -27,7 +27,7 @@ def adaptation(model, optimizer, batch, loss_fn, lr, train_step, train, device):
         input_y = y_val[idx].to(device)
         logits = model.adaptation(input_x, weights)
         loss = loss_fn(logits, input_y)
-        loss.backward(retain_graph=True)
+        #loss.backward(retain_graph=True)
         losses.append(loss)
         if idx % 5 == 4 and train:
             model.train()
