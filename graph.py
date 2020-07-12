@@ -14,4 +14,13 @@ plt.figure()
 plt.plot(log['train_loss'], label='train loss')
 plt.plot(log['test_loss'], label='test loss')
 plt.legend()
-plt.show()
+plt.savefig(graph_path + 'loss.png', bbox_inches='tight', pad_inches=0.03, dpi=600)
+
+# %%
+plt.figure()
+plt.plot(log['train_acc'], label='train acc')
+plt.plot(log['test_acc'], label='test acc')
+plt.legend()
+plt.savefig(graph_path + 'acc.png', bbox_inches='tight', pad_inches=0.03, dpi=600)
+
+# %%
