@@ -31,3 +31,7 @@ h = std_err * t.ppf((1+confidence) / 2, n - 1)
 print("acc confidence interval: [{}, {}]".format(m-h, m+h))
 
 # %%
+print(m)
+print(h)
+
+# %%
